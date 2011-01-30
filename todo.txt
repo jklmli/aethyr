@@ -1,0 +1,87 @@
+//Change python end to .pyw extension to avoid command-window popup. (Already implemented via py2exe)
+//Make error message for no connected libraries to avoid flash crash.
+//Disable auto-startup on AIR install.  Redirect desktop icon/disable/something to startup.bat.  (Must tell users to download AIR by themselves, must use custom installer.)
+//Change readme to include notice for VC++ package.
+//Fix performance problem from empty search by storing current library playlist to a global variable.
+//Fix column ordering: Title|Artist|Album|Bitrate
+//Concatenate strings by using 'join' instead of +.
+//Get a system-wide icon/logo.
+//Set up website.
+//Implement more try/catch to prevent crashes from disconnects.
+//Fix visual glitches in GUI datagrid.
+//Cleanup code, remove out-of-date commented code snippets.
+//Add LICENSE/CREDITS info.
+//Workaround alternate port if port in use? (kill clone of self)
+//Test/implement functionality for videos/other media.  If fail, restrict to mp3s(YES).
+//Fix encapsulation, e.g. indices for download should be calculated on Flash end, not Python.
+//Determine LAN/wireless/other interfaces.  Performance?
+//Fix download progress update for first song.
+//Select from a drop-down box of libraries.
+//Add downloading spinner.
+//Add warning text for protected AAC.
+//Stop user input when downloading.
+//Try/catch when user tries to connect to library in libraryList that has already disconnected; force libraryList refresh
+//Check before each download to make sure library still connected.
+//Locally connected iDevices result in infinite loop. (fixed by checking type of source)
+//Add an error message when reloading libraries - "Error: Library disconnected during connection, refreshed libraries"
+//Run uninstaller before updates in the installer.
+//Fix font glitches.
+//Remove 'tmp' file after each batch of downloads.
+//Add desktop shortcut.
+//Delete Aethyr folder in Music during uninstall.
+//Remove logging for exe.
+//Remove search functionality for manual search?
+//Add number of queued songs.
+//Reset scrollbar position to top during instant search.
+//Likely bug regarding play/stop if trying to download same song that's playing. (No?)
+//Add icon for windows taskbar.
+//'Ghost empty library' bug. (don't send server call if empty library name)
+//Automatically apply search after switching libraries, or clear search bar.
+//Update Adobe AIR if out-of-date...InstallLocation fail. (automatically downloads/install latest version of AIR if missing or < v2.0
+//Add blue bar below arrow, yellow outline. (scratched the outline)
+//Fix special characters in search. (indexOf on string, not regExp)
+//Add refresh button.
+//Make icon Photoshop-shiny.
+//Change name to 598074.
+//Change icons in AIR.
+//Ensure compatibility for Vista/XP for Aethyr folder
+//Ensure compatibility for UAC (the only thing that's kind of buggy is that Aethyr request higher privs as a .bat file)
+//Format song name downloads properly (e.g. AC/DC - song.mp3 would crash) (already implemented)
+//60 sec timeout on Python startup in case Flash crashes during startup (i.e. never connects)
+//Put songs in folders in Aethyr folder, seperated by Artist/Album name - otherwise 1000 songs has long load time...
+//Turn on loading icon while getting libraries.
+//Freeze library switch while loading.
+//Performance problem in pyc?  How? (gencache)
+//Allow Queued songs during download
+//Remove Program Files folder during uninstall
+//Rename flash to aethyrHelper.exe and python to aethyr.exe
+//Cache libraries so future loads are much faster
+//Songs/Packets dropped - (song plays are failing) - during high processor load.  any remedy?  improve CPU usage? (insert time.sleep(0.1)?)
+//Ensure compatibility for error message for library disconnect (Works for fast systems, wtf honestly)
+//Add download directory selection
+//Block download thread until necessary. (use raw sockets instead of winpcap)
+
+* Change delimiter.
+* Add bitrate column.
+* Add an x button like itunes for instant search.
+* Implement double-click song player for datagrid.
+* Change library blackout colors.
+
+* Port to C++.
+# Dynamic port selection via command-line argument passing to Flash.
+# Add report hook to download/song for slower connections.
+# Is it possible to shuttle back and forth between current song and download-in-progress so that user can still listen to music?
+# Sub-sort by artists if song match, sub-sort by albums if artist match, sub-sort by artists if album match. (artist->album->title)
+# Allow song queuing from multiple libraries.
+# Allow user to actually disable start menu?
+Fix Vista glitch.
+
+Before final release:
+//Restructure .bat file, remove start Aethyr.exe, add os.system("../Aethyr.exe") from Python after server is up.
+//Make sure to remove correct registry entry.
+//Legally download AIR/WinPCap
+# Make "howto" page.
+//Rename bin.exe to aethyrBin.exe, helper.exe to aethyrHelper.exe
+Comment out all traces/prints.
+//Disable .exe logging.
+//Turn on "protect SWF" in publish options for Flash end.
