@@ -1,0 +1,173 @@
+<html>
+
+<head>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	<meta http-equiv="CACHE-CONTROL" content="NO-STORE, NO-CACHE, MUST-REVALIDATE, POST-CHECK=0, PRE-CHECK=0, MAX-AGE=0" />
+	<meta http-equiv="EXPIRES" content="01 Jan 1970 00:00:00 GMT" />
+	<meta http-equiv="Last-Modified" content="01 Jan 1970 00:00:00 GMT" />
+	<meta http-equiv="If-Modified-Since" content="01 Jan 1970 00:00:00 GMT" />
+	<meta name="keywords" content="aethyr, download, itunes, aethyr jb, aethyr itunes, 598074, itunes jb, aethyr faq, aethyr download, ourtunes, ourtunes alternative, saveourtunes"> 
+	<title>faq</title>
+	<link rel="stylesheet" type="text/css" href="theming.css" /> 
+</head>
+
+<body style="background-color:black">
+
+<center>
+	<div>
+	<table>
+		<ul>
+			<li><a href="index.html">home</a></li>
+			<li><a href="faq.html">faq</a></li>
+			<li><a href="changelog.html">changelog</a></li>
+			<li><a href="credits.html">credits</a></li>
+			<li class="last"><a href="feedback.html">feedback</a></li>
+			<![if !IE]>
+				<li style="position:fixed; right:10px; top:10px; border:none">
+					<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://aethyrjb.com" data-text="Aethyr: a Windows app that downloads from shared iTunes libraries." data-count="none" data-via="598074">Tweet</a>
+					<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+				</li>
+			<![endif]>
+		</ul>
+	</table>
+	</div>
+</center>
+
+<hr />
+
+<h1>faq</h1>
+
+<h2>frequent</h2>
+
+<p>
+Do both my computer and the one I'm downloading from need to have this installed?<br/>
+No, only the machine that is doing the downloading needs to install this.
+</p>
+
+<br />
+
+<p>
+There are no libraries for me to select!  What's going on?<br />
+You need to first connect to the libraries within iTunes before they'll show up in Aethyr.  Afterwards, hit the refresh button.
+</p>
+
+<br />
+
+<p>
+I've downloaded the music, so where are my files?<br />
+You can use the home icon to specify a download location.  By default, they're in "My Documents/Aethyr", sorted by their tagged Artist/Album/Title.  The download location you specify will be saved, so you won't have to enter it next time.  (This also should carry over between updates.)  Tip: Set it to "My Music/iTunes/iTunes Media/Automatically Add to iTunes" to do just that.
+</p>
+
+<br />
+
+<p>
+Aethyr is downloading the files, but they all show up with a filesize of 0 kb.<br />
+This should be patched in the latest version, please use the feedback form if otherwise.
+</p>
+
+<br />
+
+<p>
+This is great!  But I have a Mac.  When are you going to port it?<br />
+Early next year (think January).  I would do it earlier, but I won't have a Mac to work with over winter break.
+</p>
+
+<br />
+
+<p>
+Why do you have so many damn updates? <br/>
+I'm the only person working on this, and therefore also the only tester with a debugging version of the code.  So I'm prone to missing a few crucial bugs here and there.
+</p>
+
+<br/>
+<br/>
+
+<h2>installation</h2>
+
+<p>
+I just installed Aethyr and it's not starting up, with no error message.<br />
+This happens on some computers.   Close both iTunes and Aethyr, then start up Aethyr again.
+</p>
+
+<br />
+
+<p>
+Same as above but a window pops up saying, "Windows cannot find 'aethyrHelper.exe'. Make sure you typed the name correctly, and then try again."<br />
+Adobe AIR didn't install properly, most likely because you ran the installer while offline.  Go to http://get.adobe.com/air for the latest version.
+</p>
+
+<br/>
+
+<p>
+Aethyr doesn't start up at all, and I've tried everything.<br/>
+1) You are using an unsupported version of iTunes.  You'll need to upgrade. <br />
+2) You don't have VC++ installed.  Do a quick search online for "Microsoft Visual C++ 2010 Redistributable Package," and install it.  <br />
+3) Try running the program as administrator.  <br />
+If none of the above fixes work, then your antivirus/firewall/UAC is most likely blocking Aethyr.  Try creating an exception for it.
+</p>
+
+<br />
+<br />
+
+<h2>use<h2/>
+
+<p>
+I don't know how to download songs / I can only download one at a time?!<br/>
+Select songs by clicking on them, use &#60;shift&#62; and &#60;ctrl&#62; to select multiple songs at once.  Hit the white arrow to download.
+</p>
+
+<br />
+
+<p>
+I specified a location using the home icon, but Aethyr will not write there or is writing to 'My Documents/Aethyr' instead.<br />
+The cause of this is UAC, which doesn't allow it to write to system-protected directories (this includes 'Program Files').
+</p>
+
+<br/>
+
+<p>
+I can't use iTunes to listen to music while using Aethyr!<br />
+I realize that this is a current limitation.  If possible, it'll be patched in an upcoming release.  Even if it's not possible, the length of time will be reduced from the duration of the download to a few seconds.
+</p>
+
+<br/>
+
+<p>
+Can this search using characters from other languages? (e.g. Chinese, Japanese, Korean)<br />
+Yes! You may have to experiment a bit to figure out which keyboard input you need to use.  For a starting reference, Chinese requires you to use the "New Experience Input Style" instead of the "ABC Input Style."  A guess from this behavior is that you need to use input that displays a horizontal list as opposed to a vertical list.
+</p>
+
+<br />
+<br />
+
+<h2>general<h2/>
+
+<p>
+Why do libraries have loading time?<br />
+This is a built-in limitation of iTunes that only occurs on the first load of a library.  Switching between already loaded libraries is instantaneous.
+</p>
+
+<br/>
+
+<p>
+Can't you combine all the libraries into one super-library?<br />
+This isn't possible due to performance issues.  Even in iTunes, it takes longer to connect to bigger libraries.
+</p>
+
+<br/>
+
+<p>
+Aethyr seems to stop working in the middle of downloading a set of songs. <br />
+This is due to a very rare disconnection bug.
+</p>
+
+<br />
+
+<p>
+Where do you plan to go from here?<br />
+First fix all the bugs that keep cropping up.  Afterwards add a 'settings' button to choose which tags you want displayed, allow downloads from multiple libraries at the same time, playback while downloading, allow transfer of other types of media such as pictures and videos, and ripping from local iDevices plugged into your computer.
+</p>
+
+</body>
+
+</html>

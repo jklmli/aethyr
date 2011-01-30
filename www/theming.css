@@ -1,0 +1,94 @@
+body{
+	font-family:"Segoe UI", "Myriad Pro", "Lucida Grande";
+}
+
+a{
+	color:#FFFFFF;
+	font-size:12pt;
+	text-decoration:none;
+	display:block;
+	width:100px;
+}
+a:hover{
+	color:#F1CA00;
+}
+
+ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+div{
+	display:table;
+	text-align:center;
+	margin:0 auto;
+}
+div table{
+	text-align: center;	
+}
+
+form,input,textarea,li{
+	font-size:10pt;
+	color:white;
+	background-color:black;
+	font-family:"Segoe UI", "Myriad Pro", "Lucida Grande";
+}
+
+li{
+	float:left;
+	display:inline;
+	border-right:1px solid #0094F0;
+	text-align:center;
+}
+li.last{
+	border:none;
+}
+
+input,textarea{
+	border:1px solid #0094F0;
+}
+input:focus,textarea:focus{
+	border:1px solid #F1CA00;
+}
+input.button{
+	font-family:Segoe UI;
+	border:1px solid black;
+}
+input.button:hover{
+	color:#F1CA00;
+	cursor:pointer;
+}
+
+hr{
+	color:#0094F0;
+	background-color:#0094F0;
+	border:none;
+	height:1px;
+	width:500px;
+}
+
+h1{
+	text-align:center;
+	font-size:24pt;
+	color:white;
+	margin:0;
+	font-weight:normal;
+}
+
+h2{
+	color:white;
+	margin:0;
+	font-weight:normal;
+}
+p{
+	margin:0;
+	color:white;
+	font-size:10pt;
+	font-family:"Segoe UI", "Myriad Pro", "Lucida Grande";
+}
+img{
+	margin:0 auto;
+	width:100%;
+	border:none;
+}

@@ -93,7 +93,7 @@ Section "Adobe AIR" AdobeAIR
   SetOutPath "$INSTDIR"
   
   ;Put file there
-  File "Aethyr.air"
+  File "Flash\Aethyr.air"
   File "icon.ico"
 
   ;Launch AIR Installer silently
