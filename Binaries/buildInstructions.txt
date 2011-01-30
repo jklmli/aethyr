@@ -1,0 +1,7 @@
+Compile aethyrHelper.py via 1) setup.py install 2) setup.py py2exe.
+
+Compile start.bat into an EXE file via Bat-to-Exe Converter, use icon image.
+
+Compile flash FLA into AIR file.
+
+Compile AIR into EXE installer via NSIS script.

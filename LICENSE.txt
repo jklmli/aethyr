@@ -19,7 +19,7 @@ This End User License Agreement ("EULA") is a legal agreement between you (eithe
 
 5.  Disclaimer of Warranty. The Software is provided "AS IS" without warranty of any kind. PROVIDER disclaims and makes no express or implied warranties and specifically disclaims the warranties of merchantability, fitness for a particular purpose and non-infringement of third-party rights. The entire risk as to the quality and performance of the Software is with you. PROVIDER does not warrant that the functions contained in the Software will meet your requirements or that the operation of the Software will be uninterrupted or error-free. PROVIDER IS NOT OBLIGATED TO PROVIDE ANY UPDATES TO THE SOFTWARE.  
 
-6.  Limitation of Liability. PROVIDER's entire liability and your exclusive remedy under this EULA shall not exceed the price paid for the Software, if any.  In no event shall PROVIDER be liable to you for any consequential, special, incidental or indirect damages of any kind arising out of the use or inability to use the software, even if PROVIDER has been advised of the possibility of such damages, or any claim by a third party.      
+6.  Limitation of Liability. PROVIDER's entire liability and your exclusive remedy under this EULA shall not exceed the price paid for the Software, if any.  In no event shall PROVIDER be liable to you for any consequential, special, incidental or indirect damages of any kind arising out of the use or inability to use the software, even if PROVIDER has been advised of the possibility of such damages, or any claim by a third party.     
 
 7.  Upgrades.  If the SOFTWARE is an upgrade from an earlier release or previously released version, you now may use that upgraded product only in accordance with this EULA.
 
