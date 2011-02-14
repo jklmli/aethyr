@@ -35,6 +35,10 @@ form,input,textarea,li{
 	font-family:"Segoe UI", "Myriad Pro", "Lucida Grande";
 }
 
+input.paypal{
+	border:none;
+}
+
 li{
 	float:left;
 	display:inline;
