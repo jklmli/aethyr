@@ -127,7 +127,7 @@ def capture(downloadFolder, artist, album, title, size, extension):
 	while(isFound is False):
 		# loop to non-blocking-ly read from socket
 		try:
-			info = iTunesSock.recvfrom(65535)[0]
+			info = iTunesSock.recvfrom(4096)[0]
 		except Exception:
 			continue
 			
@@ -136,7 +136,7 @@ def capture(downloadFolder, artist, album, title, size, extension):
 			print(info)
 			# is it a stream request?
 			try:
-				url = 'http://' + re.compile('daap://(.*?) HTTP').search(info).group(1)
+				url = 'http://' + re.compile('daap://([^/]*/databases.*?) HTTP').search(info).group(1)
 				print url
 			except AttributeError:
 				pass
@@ -170,6 +170,7 @@ def capture(downloadFolder, artist, album, title, size, extension):
 				except urllib2.HTTPError, e:
 					tmp.close()
 					os.remove(tmpFile)
+					print(e)
 					print('--------------Wrong Code------------')
 					break
 				# the other library disconnected
@@ -200,7 +201,7 @@ def capture(downloadFolder, artist, album, title, size, extension):
 					shutil.move(tmpFile, downloadFolder + '%s\%s\%s' % (artist, album, title) + extension)
 
 def cleanTmp():
-	print(downloadFolder + 'aethyr.ini')
+	print(downloadFolder)
 	# creation if it doesn't exist; reset if not allowed
 	if os.path.exists(downloadFolder) is False:
 		try:
@@ -446,7 +447,7 @@ while(True):
 		cleanTmp()
 
 	if(data.find('loadLibrary') != -1):
-		# parse
+		# format: loadLibrary<delimiter>1
 		index = int((data.split(delimiter)[1])[:-1])
 		
 		currentLibrary = libraries[index]
