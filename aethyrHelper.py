@@ -105,8 +105,10 @@ def determineExtension(filetype):
 			'MPEG-4 audio file':'.m4a',
 			'AAC audio file':'.m4a',
 			'Purchased AAC audio file':'.m4a'
+			# future support for video files
 #			'MPEG-4 video file':'.m4v',
 #			'Purchased MPEG-4 video file':'.m4v'		
+#			'Quicktime movie file':'.mp4'
 									}
 	try:
 		extension = extMap[filetype]
@@ -114,6 +116,12 @@ def determineExtension(filetype):
 		extension = '.mp3'
 	print(extension)
 	return extension
+
+# returns (file handle, string location)
+def newTemporaryFile():
+	handle, location = tempfile.mkstemp()
+	print(location)
+	return os.fdopen(handle, 'wb'), location
 
 # begin waiting for iTunes request
 def capture(downloadFolder, artist, album, title, size, extension):
@@ -155,50 +163,53 @@ def capture(downloadFolder, artist, album, title, size, extension):
 				req = urllib2.Request(url)
 				req.add_header('Client-DAAP-Validation', code)
 				req.add_header('Client-DAAP-Request-ID', (str)(idd))
+
+				# allows pulling certain chunks of a song...fallback workaround if iTunes actually begins 'streaming'
 #				req.add_header('Range', 'bytes=0-5000')
 
 				# we create a temporary file first in case we can't read from the file, transfer gets interrupted, etc.
-				tmp, tmpFile = tempfile.mkstemp()
-				print(tmpFile)
-				tmp = os.fdopen(tmp, 'wb')	
+				mp3Buffer, mp3BufferLocation = newTemporaryFile()	
 				startTime = time.clock()
 
 				# try to download
 				try:
-					tmp.write(urllib2.urlopen(req).read())
+					mp3Buffer.write(urllib2.urlopen(req).read())
 				# iTunes doesn't like our fake request
 				except urllib2.HTTPError, e:
-					tmp.close()
-					os.remove(tmpFile)
+					mp3Buffer.close()
+					os.remove(mp3BufferLocation)
 					print(e)
 					print('--------------Wrong Code------------')
 					break
 				# the other library disconnected
 				except socket.error:
-					tmp.close()
-					os.remove(tmpFile)
+					mp3Buffer.close()
+					os.remove(mp3BufferLocation)
 					eventDisconnection()
 					break
 				# catch-all protection
 				except Exception, e:
-					tmp.close()
-					os.remove(tmpFile)
-					print('Exception: ' + str(e))
+					mp3Buffer.close()
+					os.remove(mp3BufferLocation)
 					protectedFiles = True
+					print('Exception: ' + str(e))
 					break
 				# download successful!
 				else:
-					tmp.close()
+					mp3Buffer.close()
+					
 					endTime = time.clock()
 					totalTime += endTime - startTime
 					totalSize += size
-					currentLevel = downloadFolder + artist
-					if os.path.exists(currentLevel) is False:
-						os.mkdir(currentLevel)
-					currentLevel = currentLevel + '\%s' % album
-					if os.path.exists(currentLevel) is False:
-						os.mkdir(currentLevel)
-					shutil.move(tmpFile, downloadFolder + '%s\%s\%s' % (artist, album, title) + extension)
+					
+					artistFolder = downloadFolder + artist
+					if os.path.exists(artistFolder) is False:
+						os.mkdir(artistFolder)
+					albumFolder = artistFolder + '\%s' % album
+					if os.path.exists(albumFolder) is False:
+						os.mkdir(albumFolder)
+						
+					shutil.move(mp3BufferLocation, downloadFolder + '%s\%s\%s' % (artist, album, title) + extension)
 
 def cleanTmp():
 	print(downloadFolder)
@@ -208,14 +219,18 @@ def cleanTmp():
 			os.mkdir(downloadFolder)
 		except WindowsError:
 			resetDefaultFolder()
+	isWritableCheck(downloadFolder + 'aethyrConfig.ini')
+
+def isWritableCheck(document):
 	try:
-		tmpFile = open(downloadFolder + 'aethyrConfig.ini', 'wb')
+		tmpFile = open(document, 'wb')
 		tmpFile.write('asdf')
 	except IOError:
 		resetDefaultFolder()
 	else:
 		tmpFile.close()
-		os.remove(downloadFolder + 'aethyrConfig.ini')
+		os.remove(document)
+
 
 # reset download folder back to My Documents\Aethyr			
 def resetDefaultFolder():
