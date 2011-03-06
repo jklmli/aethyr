@@ -22,6 +22,7 @@ from win32com import client
 ##########
 
 def loadStoredDownloadFolder(configFileLocation):
+	global downloadFolder
 	# check to see if download folder previously configured
 	if os.path.exists(configFileLocation):
 		with open(configFileLocation, 'r') as config:
@@ -88,7 +89,7 @@ class CapturePacket(threading.Thread):
 		while(self.url is None):
 			# loop to non-blocking-ly read from socket
 			try:
-				info = self.socket.recvfrom(4096)[0]
+				info = self.socket.recvfrom(65535)[0]
 			except Exception:
 				continue
 			
@@ -110,6 +111,10 @@ class CapturePacket(threading.Thread):
 					requestID += 1
 					self.packetHeaders['Client-DAAP-Request-ID'] = (str)(requestID)
 					print ('Using DAAP Request ID:   %s' % requestID)
+
+					udpPort = re.compile('x-audiocast-udpport: (.*)').search(info).group(1)
+					self.packetHeaders['x-audiocast-udpport'] = udpPort
+					print ('Using UDP Port:          %s' % udpPort)
 					
 					# other client is iTunes
 					try:
@@ -252,12 +257,12 @@ def writeFromBufferToSystem(mp3BufferLocation, downloadFolder, artist, album, ti
 
 def printSongInfo(title, artist, album, size, type, extension, downloadNumber, numberOfDownloads):
 	print('(%i/%i)' % ((int)(downloadNumber) + 1, numberOfDownloads))
-	print('Title:  %s' % title.encode('utf-8'))
-	print('Artist: %s' % artist.encode('utf-8'))
-	print('Album:  %s' % album.encode('utf-8'))
-	print('Size:   %i' % size)
-	print('Type:   %s' % type.encode('utf-8'))
-	print('Type:   %s' % extension.encode('utf-8'))
+	print('Title:     %s' % title.encode('utf-8'))
+	print('Artist:    %s' % artist.encode('utf-8'))
+	print('Album:     %s' % album.encode('utf-8'))
+	print('Size:      %i' % size)
+	print('Type:      %s' % type.encode('utf-8'))
+	print('Extension: %s' % extension.encode('utf-8'))
 	
 def printTotalStats():
 	print('\n\n\nTotal Bandwidth:        %s MB' % str(totalSize/1048576.0)[:8])
@@ -316,7 +321,7 @@ def processQueue(currentTracks, indicesToDownload):
 			disconnectionError = True
 			break
 
-		printSongInfo(artist, album, title, size, type, extension, downloadNumber, numberOfSongsToDownload)
+		printSongInfo(title, artist, album, size, type, extension, downloadNumber, numberOfSongsToDownload)
 		updateFlashWithDownloadInfo(downloadNumber, numberOfSongsToDownload)
 		
 		artist = fixFileName(artist)
@@ -540,6 +545,10 @@ while(True):
 		path = data.split(DELIMITER)[1][:-1] + '\\'
 		
 		downloadFolder = path.decode('utf-8')
+
+		with open(configFileLocation, 'w') as config:
+			config.write(downloadFolder)
+			
 		checkDownloadFolderIntegrity()
 
 	if(data.find('loadLibrary') != -1):
