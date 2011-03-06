@@ -2,7 +2,7 @@
 ;Constants
 
 !define NAME "Aethyr"
-!define VERSION "1.3.2"
+!define VERSION "1.5.0"
 !define PUBLISHER "598074"
 !define DESCRIPTION "the itunes jb"
 
@@ -18,9 +18,9 @@
 
   ;Name and file
   Name "Aethyr"
-  OutFile "aethyr-1.3.2-win3264-installer.exe"
+  OutFile "aethyr-1.5.0-win3264-installer.exe"
   Icon "icon.ico"
-  BrandingText "Aethyr v1.3.1 Setup"
+  BrandingText "Aethyr v1.5.0 Setup"
 
   ;Default installation folder
   InstallDir $PROGRAMFILES\Aethyr
@@ -113,7 +113,7 @@ Section "Aethyr" Aethyr
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayName" "Aethyr"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.3.2"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.5.0"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayIcon" "$INSTDIR\icon.ico"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "Publisher" "598074"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "UninstallString" "$INSTDIR\uninstall.exe"

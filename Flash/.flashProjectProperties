@@ -6,18 +6,12 @@
   <classTemplate>file:///C|/Users/Onur/AppData/Local/Adobe/Flash CS5/en_US/Configuration/ActionScript 3.0/Templates/standardClass_as3.as</classTemplate>
   <classPath>.</classPath>
   <defaultApp>file:///C|/Users/Onur/Documents/Flash/Aethyr.fla</defaultApp>
-  <rootURI>file:///C|/Users/Onur/Documents/Flash/</rootURI>
+  <rootURI>file:///C|/Users/admin/Code/github/aethyr/Flash/</rootURI>
   <flexSDK/>
   <sources editable="false"/>
   <libraries editable="false"/>
   <externalLibraries editable="false"/>
   <compileList editable="false"/>
-  <recentFiles editable="false">
-    <uri label="Aethyr-app.xml">file:///C|/Users/Onur/Documents/Flash/Aethyr-app.xml</uri>
-    <uri label="Aethyr.swf">file:///C|/Users/Onur/Documents/Flash/Aethyr.swf</uri>
-    <uri label="Aethyr.fla">file:///C|/Users/Onur/Documents/Flash/Aethyr.fla</uri>
-    <uri label="events.as">file:///C|/Users/Onur/Documents/Flash/events.as</uri>
-    <uri label="Aethyr.html">file:///C|/Users/Onur/Documents/Flash/Aethyr.html</uri>
-  </recentFiles>
+  <recentFiles editable="false"/>
   <locations editable="false"/>
 </projectDescription>

@@ -16,17 +16,17 @@ import urllib2
 
 import win32com	
 from win32com import client
-import psyco
+# psyco broken on py2exe?
+# import psyco
 
 ##########
 
 def loadStoredDownloadFolder(configFileLocation):
 	# check to see if download folder previously configured
 	if os.path.exists(configFileLocation):
-		config = open(configFileLocation, 'r')
-		path = config.readline().decode('utf-8')
-		print(path)
-		config.close()
+		with open(configFileLocation, 'r') as config:
+			path = config.readline().decode('utf-8')
+			print('Previous stored download folder at: %s' % path)
 	
 		# invalid previous configuration, i.e. folder deleted/removed
 		try:
@@ -82,6 +82,7 @@ class CapturePacket(threading.Thread):
 		threading.Thread.__init__(self)
 		self.socket = socket
 		self.url = None
+		self.packetHeaders = {}
 
 	def run(self):
 		while(self.url is None):
@@ -92,7 +93,7 @@ class CapturePacket(threading.Thread):
 				continue
 			
 			# iTunes is up to something
-			if (info.find('daap') != -1):
+			if (info.find('GET daap://') != -1):
 				print('')
 				print('Captured Packet:')
 				print(info)
@@ -103,45 +104,51 @@ class CapturePacket(threading.Thread):
 					pass
 				else:
 					self.url = url
-					# the only two parts iTunes cares about
-					verificationKey = re.compile('Client-DAAP-Validation: (.*)').search(info).group(1)
-					numberStreamed = (int)(re.compile('Client-DAAP-Request-ID: (.*)').search(info).group(1))
-					numberStreamed += 1
+					print ('Using URL:               %s' % url)
 					
-					print ('Using URL:             %s' % url)
-					print ('Using Validation Key:  %s' % verificationKey)
-					print ('Using Number Streamed: %s' % numberStreamed)
+					requestID = (int)(re.compile('Client-DAAP-Request-ID: (.*)').search(info).group(1))
+					requestID += 1
+					self.packetHeaders['Client-DAAP-Request-ID'] = (str)(requestID)
+					print ('Using DAAP Request ID:   %s' % requestID)
 					
-					self.verificationKey = verificationKey
-					self.numberStreamed = numberStreamed
+					# other client is iTunes
+					try:
+						daapValidation = re.compile('Client-DAAP-Validation: (.*)').search(info).group(1)
+						self.packetHeaders['Client-DAAP-Validation'] = daapValidation
+						print ('Using DAAP Validation:   %s' % verificationKey)
+					# non-iTunes? (currently tested with Firefly'd iTouch)
+					except AttributeError:
+						try:
+							accessIndex = re.compile('Client-DAAP-Access-Index: (.*)').search(info).group(1)
+							self.packetHeaders['Client-DAAP-Access-Index'] = accessIndex
+							print ('Using DAAP Access Index: %s' % accessIndex)
+						except Exception, e:
+							print('Exception thrown while copying request: %s' % str(e))
 
 	def kill(self):
 		# terminates while loop
 		self.url = 0
-
-	def getVerificationKey(self):
-		return self.verificationKey
 	
 	def getURL(self):
 		return self.url
-	
-	def getNumberStreamed(self):
-		return self.numberStreamed
+
+	def getPacketHeaders(self):
+		return self.packetHeaders
 	
 class Download(threading.Thread):
-	def __init__(self, url, verificationKey, numberStreamed):
+	def __init__(self, url, packetHeaders):
 		threading.Thread.__init__(self)
 		self.url = url
-		self.verificationKey = verificationKey
-		self.numberStreamed = numberStreamed
+		self.packetHeaders = packetHeaders
 		self.disconnectionError = False
 		self.exception = False
 			
 	def run(self):
 		# forge a fake iTunes request
 		req = urllib2.Request(self.url)
-		req.add_header('Client-DAAP-Validation', self.verificationKey)
-		req.add_header('Client-DAAP-Request-ID', (str)(self.numberStreamed))
+
+		for authenticationElement in self.packetHeaders.keys():
+			req.add_header(authenticationElement, self.packetHeaders[authenticationElement])
 	
 		# allows pulling certain chunks of a song...fallback workaround if iTunes actually begins 'streaming'
 #		req.add_header('Range', 'bytes=0-5000')
@@ -212,12 +219,11 @@ def checkDownloadFolderIntegrity():
 
 def isWritableCheck(fileLocation):
 	try:
-		fileHandle = open(fileLocation, 'wb')
-		fileHandle.write('asdf')
+		with open(fileLocation, 'wb') as fileHandle:
+			fileHandle.write('asdf')
 	except IOError:
 		resetDefaultFolder()
 	else:
-		fileHandle.close()
 		os.remove(fileLocation)
 
 
@@ -349,7 +355,7 @@ def processQueue(currentTracks, indicesToDownload):
 		iTunes.Stop()
 
 		# wait until download is complete
-		downloadThread = Download(capture.getURL(), capture.getVerificationKey(), capture.getNumberStreamed())
+		downloadThread = Download(capture.getURL(), capture.getPacketHeaders())
 		downloadThread.start()
 		downloadThread.join()
 		
@@ -396,9 +402,9 @@ def errorFlashClientFail():
 ##########
 
 # disable py2exe log feature by routing stdout/sterr to the special nul file
-#if hasattr(sys, 'frozen'):
-#	sys.stdout = open('nul', 'w')
-#	sys.stderr = open('nul', 'w')
+if hasattr(sys, 'frozen'):
+	sys.stdout = open('nul', 'w')
+	sys.stderr = open('nul', 'w')
 
 # rebuild cache file for iTunes COM if it doesn't exist
 if win32com.client.gencache.is_readonly == True:
@@ -409,7 +415,7 @@ if win32com.client.gencache.is_readonly == True:
 iTunes = win32com.client.gencache.EnsureDispatch('iTunes.Application')
 
 # psyco optimization
-psyco.full()
+# psyco.full()
 
 # find My Documents
 objShell = win32com.client.Dispatch('WScript.Shell')
@@ -454,11 +460,12 @@ iTunesSock.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
 flashSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 flashSock.bind(('127.0.0.1', PORT))
 flashSock.listen(1)
+
 # 60 second connection to flash timeout so aethyrHelper doesn't live forever
 flashSock.settimeout(60)
 
 # launch flash frontend
-#os.startfile(os.path.abspath("aethyrBin.exe"))
+os.startfile(os.path.abspath("aethyrBin.exe"))
 
 # wait for flash to connect
 try:
