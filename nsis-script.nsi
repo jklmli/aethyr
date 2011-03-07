@@ -2,7 +2,7 @@
 ;Constants
 
 !define NAME "Aethyr"
-!define VERSION "1.5.0"
+!define VERSION "1.6.0"
 !define PUBLISHER "598074"
 !define DESCRIPTION "the itunes jb"
 
@@ -18,9 +18,9 @@
 
   ;Name and file
   Name "Aethyr"
-  OutFile "aethyr-1.5.0-win3264-installer.exe"
+  OutFile "aethyr-1.6.0-win3264-installer.exe"
   Icon "icon.ico"
-  BrandingText "Aethyr v1.5.0 Setup"
+  BrandingText "Aethyr v1.6.0 Setup"
 
   ;Default installation folder
   InstallDir $PROGRAMFILES\Aethyr
@@ -56,6 +56,7 @@
   !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
   
   !insertmacro MUI_PAGE_INSTFILES
+  !insertmacro MUI_PAGE_FINISH
   
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
@@ -69,6 +70,8 @@
 ;Installer Sections
 
 Section "Adobe AIR" AdobeAIR
+  SetRebootFlag true
+  
   SectionIn RO
 
   ReadRegStr $2 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\com.598074.Aethyr" "UninstallString"
@@ -113,7 +116,7 @@ Section "Aethyr" Aethyr
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayName" "Aethyr"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.5.0"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.6.0"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayIcon" "$INSTDIR\icon.ico"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "Publisher" "598074"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "UninstallString" "$INSTDIR\uninstall.exe"

@@ -3,7 +3,7 @@ import py2exe
 
 setup(
 	windows=[{
-			'script':'aethyrHelper.py'
+			'script':'AethyrHelper.py'
 		}],
 	options={
 		"py2exe":{
