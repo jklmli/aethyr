@@ -142,7 +142,7 @@ def processQueue(currentTracks, indicesToDownload):
 # disable py2exe log feature by routing stdout/sterr to the special nul file
 if hasattr(sys, 'frozen'):
 	sys.stdout = open('nul', 'w')
-	sys.stderr = open('nul', 'w')
+	sys.stderr = open('error.log', 'w')
 
 # rebuild cache file for iTunes COM if it doesn't exist
 if win32com.client.gencache.is_readonly == True:

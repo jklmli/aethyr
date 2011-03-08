@@ -2,9 +2,9 @@
 ;Constants
 
 !define NAME "Aethyr"
-!define VERSION "1.6.0"
+!define VERSION "1.6.1"
 !define PUBLISHER "598074"
-!define DESCRIPTION "the itunes jb"
+!define DESCRIPTION "The iTunes JB"
 
 ;--------------------------------
 ;Include Modern UI
@@ -18,9 +18,9 @@
 
   ;Name and file
   Name "Aethyr"
-  OutFile "aethyr-1.6.0-win3264-installer.exe"
+  OutFile "aethyr-1.6.1-win3264-installer.exe"
   Icon "icon.ico"
-  BrandingText "Aethyr v1.6.0 Setup"
+  BrandingText "Aethyr v1.6.1 Setup"
 
   ;Default installation folder
   InstallDir $PROGRAMFILES\Aethyr
@@ -116,7 +116,7 @@ Section "Aethyr" Aethyr
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayName" "Aethyr"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.6.0"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.6.1"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayIcon" "$INSTDIR\icon.ico"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "Publisher" "598074"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "UninstallString" "$INSTDIR\uninstall.exe"
