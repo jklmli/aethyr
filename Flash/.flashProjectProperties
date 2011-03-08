@@ -7,7 +7,7 @@
   <classPath>.</classPath>
   <defaultApp>file:///C|/Users/Onur/Documents/Flash/Aethyr.fla</defaultApp>
   <rootURI>file:///C|/Users/admin/Code/github/aethyr/Flash/</rootURI>
-  <flexSDK/>
+  <flexSDK>C:\Program Files\Adobe\Adobe Flash Builder 4\sdks\3.5.0</flexSDK>
   <sources editable="false"/>
   <libraries editable="false"/>
   <externalLibraries editable="false"/>

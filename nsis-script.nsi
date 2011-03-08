@@ -2,7 +2,7 @@
 ;Constants
 
 !define NAME "Aethyr"
-!define VERSION "1.6.1"
+!define VERSION "1.6.2"
 !define PUBLISHER "598074"
 !define DESCRIPTION "The iTunes JB"
 
@@ -18,9 +18,9 @@
 
   ;Name and file
   Name "Aethyr"
-  OutFile "aethyr-1.6.1-win3264-installer.exe"
+  OutFile "aethyr-1.6.2-win3264-installer.exe"
   Icon "icon.ico"
-  BrandingText "Aethyr v1.6.1 Setup"
+  BrandingText "Aethyr v1.6.2 Setup"
 
   ;Default installation folder
   InstallDir $PROGRAMFILES\Aethyr
@@ -116,7 +116,7 @@ Section "Aethyr" Aethyr
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayName" "Aethyr"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.6.1"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayVersion" "1.6.2"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "DisplayIcon" "$INSTDIR\icon.ico"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "Publisher" "598074"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr" "UninstallString" "$INSTDIR\uninstall.exe"
@@ -226,6 +226,7 @@ Function DetectAIR
   ClearErrors
   ReadRegDWORD $3 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Adobe AIR" "VersionMajor"
   StrCmp $3 "2" success_AIR
+  StrCmp $3 "3" success_AIR
   MessageBox MB_OK "Adobe AIR installation was aborted, but it is a required component of Aethyr.  Aethyr will now abort installation."
   RMDir /r "$INSTDIR"
   Quit

@@ -52,10 +52,6 @@ def processQueue(currentTracks, indicesToDownload):
 	print(indicesToDownload)
 	filesSkipped = False
 	disconnectionError = False
-
-	# attempt to reset internal iTunes counter
-	iTunes.Play()
-	iTunes.Stop()
 	
 	numberOfSongsToDownload = len(indicesToDownload)
 	
@@ -161,7 +157,7 @@ print('My Documents is located at: %s' % myDocs)
 downloadFolder = myDocs + 'Aethyr\\'
 
 # config file holding location of download folder
-configFileLocation = myDocs + 'aethyr.ini'
+configFileLocation = 'aethyr.ini'
 
 storedLocation = Download.loadStoredDownloadFolder(configFileLocation)
 
@@ -220,13 +216,19 @@ flashConnection.setblocking(1)
 # must be non-blocking to utilize threads properly
 iTunesSock.setblocking(0)
 
+if (Helper.isNeedUpdate()):
+	sendToFlash('needToUpdateClient' + DELIMITER)
+
 ##########
 
 while(True):
 #	print(flashSock.getpeername())
 
 	# why is this 4096?
-	data = flashConnection.recv(4096)
+	try:
+		data = flashConnection.recv(4096)
+	except socket.error:
+		Error.flashClientFail(flashSock, iTunesSock)
 
 	print('Command from Flash: %s' % data)
 
@@ -256,7 +258,7 @@ while(True):
 
 		# something didn't download
 		if (filesSkipped == True):
-			sendToFlash('protectedFiles')
+			sendToFlash('filesMissing')
 
 	if (data.find('getiTunesLibraries') != -1):
 		libraries = Helper.getiTunesLibraries(iTunes.Sources)

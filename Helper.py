@@ -1,6 +1,12 @@
 import os
 import sys
 import tempfile
+import urllib2
+import _winreg
+
+#####
+
+updateURL = 'http://www.aethyrjb.com/version.txt'
 
 #####
 
@@ -80,3 +86,15 @@ def getiTunesLibraries(sources):
 #        libraries = [i.Name for i in list(sources)[2:]]
     print('Refreshed list of libraries: %s' % str(libraries))
     return libraries
+
+def isNeedUpdate():
+    registry = _winreg.ConnectRegistry(None, _winreg.HKEY_LOCAL_MACHINE)
+    aethyrKey = _winreg.OpenKey(registry, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Aethyr')
+    currentVersion = _winreg.QueryValueEx(aethyrKey, 'DisplayVersion')[0].strip()
+    try:
+	serverVersion = urllib2.urlopen(updateURL).read().strip()
+    	print('Current version is: %s' % currentVersion)
+    	print('Server version is: %s' % serverVersion)
+    	return (serverVersion > currentVersion)
+    except urllib2.HTTPError:
+    	return False
