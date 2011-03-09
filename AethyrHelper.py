@@ -200,7 +200,8 @@ flashSock.listen(1)
 flashSock.settimeout(60)
 
 # launch flash frontend
-os.startfile(os.path.abspath("AethyrBin.exe"))
+if hasattr(sys, 'frozen'):
+	os.startfile(os.path.abspath("AethyrBin.exe"))
 
 # wait for flash to connect
 try:
