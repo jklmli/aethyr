@@ -16,9 +16,9 @@ class CapturePacket(threading.Thread):
         while(self.url is None):
             # loop to non-blocking-ly read from socket
             try:
-                info = self.socket.recvfrom(65535)[0]
+                info = self.socket.recvfrom(4096)[0]
             except Exception:
-                continue    
+                continue
             # iTunes is up to something
             if (info.find('GET daap://') != -1):
                 print('')
@@ -38,9 +38,9 @@ class CapturePacket(threading.Thread):
                     self.packetHeaders['Client-DAAP-Request-ID'] = (str)(requestID)
                     print ('Using DAAP Request ID: %s' % requestID)
 
-                    udpPort = re.compile('x-audiocast-udpport: (.*)').search(info).group(1)
-                    self.packetHeaders['x-audiocast-udpport'] = udpPort
-                    print ('Using UDP Port: %s' % udpPort)
+#                   udpPort = re.compile('x-audiocast-udpport: (.*)').search(info).group(1)
+#                   self.packetHeaders['x-audiocast-udpport'] = udpPort
+#                   print ('Using UDP Port: %s' % udpPort)
                     
                     # other client is iTunes
                     try:

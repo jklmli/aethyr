@@ -56,6 +56,7 @@ def processQueue(currentTracks, indicesToDownload):
 	numberOfSongsToDownload = len(indicesToDownload)
 	
 	for downloadNumber in range(numberOfSongsToDownload):
+		
 		try:
 			songIndex = indicesToDownload[downloadNumber]
 			currentSong = currentTracks[songIndex]
@@ -83,6 +84,10 @@ def processQueue(currentTracks, indicesToDownload):
 			filesSkipped = True
 			continue
 
+		# reset internal iTunes counter
+		currentSong.Play()
+		iTunes.Stop()
+		
 		# begin waiting
 		capture = CapturePacket.CapturePacket(iTunesSock)
 		capture.start()
@@ -138,7 +143,7 @@ def processQueue(currentTracks, indicesToDownload):
 # disable py2exe log feature by routing stdout/sterr to the special nul file
 if hasattr(sys, 'frozen'):
 	sys.stdout = open('nul', 'w')
-	sys.stderr = open('error.log', 'w')
+	sys.stderr = open('error.log', 'a')
 
 # rebuild cache file for iTunes COM if it doesn't exist
 if win32com.client.gencache.is_readonly == True:
@@ -157,7 +162,7 @@ print('My Documents is located at: %s' % myDocs)
 downloadFolder = myDocs + 'Aethyr\\'
 
 # config file holding location of download folder
-configFileLocation = 'aethyr.ini'
+configFileLocation = myDocs + 'aethyr.ini'
 
 storedLocation = Download.loadStoredDownloadFolder(configFileLocation)
 
