@@ -5,8 +5,7 @@ import time
 
 ##########
 
-import win32com	
-from win32com import client
+import win32com.client
 
 ##########
 
@@ -19,10 +18,10 @@ import Helper
 ##########
 
 def sendToFlash(message):
-    try:
-        flashConnection.send(message.encode('utf-8'))
-    except socket.error:
-        Error.flashClientFail(flashSock, iTunesSock)
+	try:
+		flashConnection.send(message.encode('utf-8'))
+	except socket.error:
+		Error.flashClientFail(flashSock, iTunesSock)
 
 def updateTotalTime(timeSpent):
 	global totalTime
@@ -35,33 +34,32 @@ def updateTotalSize(size):
 def updateFlashWithDownloadInfo(downloadNumber, numberOfSongsToDownload):
 	totalBandwidthTruncated = str(totalSize/1048576.0)[:STATACCURACY]
 	totalTimeTruncated = str(totalTime)[:STATACCURACY]
-	
+
 	if totalTime != 0:
 		averageSpeedTruncated = str(totalSize/(1048576*totalTime))[:STATACCURACY]
 	else:
 		averageSpeedTruncated = '0.000000'
 
-	# give update status to flash
+		# give update status to flash
 	sendToFlash(DELIMITER.join([
-				str(int(downloadNumber)) + '/' + str(numberOfSongsToDownload),
-				totalBandwidthTruncated, totalTimeTruncated, averageSpeedTruncated, data
-		]))
+		str(int(downloadNumber)) + '/' + str(numberOfSongsToDownload),
+		totalBandwidthTruncated, totalTimeTruncated, averageSpeedTruncated, data
+	]))
 
 def processQueue(currentTracks, indicesToDownload):
 	print('')
 	print(indicesToDownload)
 	filesSkipped = False
 	disconnectionError = False
-	
+
 	numberOfSongsToDownload = len(indicesToDownload)
-	
+
 	for downloadNumber in range(numberOfSongsToDownload):
-		
 		try:
 			songIndex = indicesToDownload[downloadNumber]
 			currentSong = currentTracks[songIndex]
-			currentDownload = Download.Download(currentSong, downloadNumber, 
-										numberOfSongsToDownload, downloadFolder)
+			currentDownload = Download.Download(currentSong, downloadNumber,
+									numberOfSongsToDownload, downloadFolder)
 		except Exception, e:
 			print(str(e))
 			print('Other library disconnected')
@@ -70,11 +68,11 @@ def processQueue(currentTracks, indicesToDownload):
 
 		currentDownload.printSongInfo()
 		updateFlashWithDownloadInfo(downloadNumber, numberOfSongsToDownload)
-		
+
 		currentDownload.artist = Helper.fixFileName(currentDownload.artist)
 		currentDownload.album = Helper.fixFileName(currentDownload.album)
 		currentDownload.title = Helper.fixFileName(currentDownload.title)
-		
+
 		if(currentDownload.isAlreadyExists()):
 			print('Already downloaded, skipping!\n')
 			continue
@@ -87,11 +85,11 @@ def processQueue(currentTracks, indicesToDownload):
 		# reset internal iTunes counter
 		currentSong.Play()
 		iTunes.Stop()
-		
+
 		# begin waiting
 		capture = CapturePacket.CapturePacket(iTunesSock)
 		capture.start()
-		
+
 		# bait it out...
 		try:
 			currentSong.Play()
@@ -103,39 +101,39 @@ def processQueue(currentTracks, indicesToDownload):
 			# tell flash something's up
 			filesSkipped = True
 			continue
-			
+
 		# wait until parsing is complete
 		capture.join()
-			
+
 		# shut up
 		iTunes.Stop()
 
 		# wait until currentDownload is complete
-		downloadThread = ForgePacket.ForgePacket(capture.getURL(), 
-									 capture.getPacketHeaders())
+		downloadThread = ForgePacket.ForgePacket(capture.getURL(),
+									capture.getPacketHeaders())
 		downloadThread.start()
 		downloadThread.join()
-		
+
 		if (downloadThread.isDisconnectionError()):
 			disconnectionError = True
 			break
-		
+
 		if (downloadThread.isException()):
 			filesSkipped = True
 			continue
-		
+
 		updateTotalTime(downloadThread.getTimeSpent())
 		updateTotalSize(currentDownload.size)
-		
+
 		currentDownload.writeFromTempToDownloadFolder(downloadThread.getMp3BufferLocation())
 
 		# fix internal iTunes song offset to accomadate for fake request
 		iTunes.Play()
 		iTunes.Stop()
-		
+
 		print('')
 		currentDownload.printTotalStats(totalSize, totalTime)
-		
+
 	return filesSkipped, disconnectionError
 
 ##########
@@ -168,7 +166,7 @@ storedLocation = Download.loadStoredDownloadFolder(configFileLocation)
 
 if (storedLocation is not None):
 	downloadFolder = storedLocation
-	
+
 if (not Helper.isFolderIntegrityOK(downloadFolder)):
 	downloadFolder = Download.resetDefaultDownloadFolder(myDocs, configFileLocation)
 
@@ -214,7 +212,7 @@ try:
 except socket.error, e:
 	print('Exception while connecting to Flash: ' + str(e))
 	Error.flashClientFail(flashSock, iTunesSock)
-	
+
 # remove timeout
 flashSock.setblocking(1)
 flashConnection.setblocking(1)
@@ -226,6 +224,8 @@ if (Helper.isNeedUpdate()):
 	sendToFlash('needToUpdateClient' + DELIMITER)
 
 ##########
+global tracks
+global currentLibrary
 
 while(True):
 #	print(flashSock.getpeername())
@@ -240,25 +240,25 @@ while(True):
 
 	if(data.find('downloadProgress') != -1):
 		print('Downloading...')
-		
-		downSet = [int(x) for x in 
-				data[len('downloadProgress' + DELIMITER):-1].split(DELIMITER)]
-		
+
+		downSet = [int(x) for x in
+					data[len('downloadProgress' + DELIMITER):-1].split(DELIMITER)]
+
 		filesSkipped, disconnectionError = processQueue(tracks, downSet)
-		
+
 		if(disconnectionError):
-			Error.disconnection(alreadyLoaded, currentLibrary, 
-							flashConnection, flashSock, iTunesSock)
-		
+			Error.disconnection(alreadyLoaded, currentLibrary,
+								flashConnection, flashSock, iTunesSock)
+
 		totalBandwidthTruncated = str(totalSize/1048576.0)[:STATACCURACY]
 		totalTimeTruncated = str(totalTime)[:STATACCURACY]
-		
+
 		if totalTime != 0:
 			averageSpeedTruncated = str(totalSize/(1048576*totalTime))[:STATACCURACY]
 		else:
 			averageSpeedTruncated = '0.000000'
 
-		sendToFlash(DELIMITER.join([str(len(downSet)) + '/' + str(len(downSet)), 
+		sendToFlash(DELIMITER.join([str(len(downSet)) + '/' + str(len(downSet)),
 								totalBandwidthTruncated, totalTimeTruncated,
 								averageSpeedTruncated, 'finishedDownload', data]))
 
@@ -283,9 +283,9 @@ while(True):
 		# format: loadLibrary<DELIMITER>1
 		downloadNumber = int((data.split(DELIMITER)[1])[:-1])
 		currentLibrary = libraries[downloadNumber]
-		
+
 		print('Library loaded: %s' % currentLibrary.encode('utf-8'))
-		
+
 		startTime = time.time()
 		try:
 			# is it cached?
@@ -293,13 +293,13 @@ while(True):
 				# parse the library
 				otherLib = iTunes.Sources.ItemByName(currentLibrary).Playlists(1)
 				tracks = list(otherLib.Tracks)
-				
+
 				(titles, artists, albums) = (
-					DELIMITER.join([song.Name for song in tracks]), 
-					DELIMITER.join([song.Artist for song in tracks]), 
+					DELIMITER.join([song.Name for song in tracks]),
+					DELIMITER.join([song.Artist for song in tracks]),
 					DELIMITER.join([song.Album for song in tracks])
 				)
-				
+
 				currentLibrarySerialized = BIGDELIMITER.join([titles, artists, albums, data])
 				alreadyLoaded[currentLibrary] = (currentLibrarySerialized, tracks)
 			else:
@@ -312,8 +312,8 @@ while(True):
 		# notify flash of completion
 		else:
 			sendToFlash(currentLibrarySerialized)
-			
+
 		print('Library loading time: %s' % (time.time() - startTime))
-		
+
 	if(data.find('aethyrEXIT') != -1):
 		Helper.shutdown(flashSock, iTunesSock)
