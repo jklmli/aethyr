@@ -1,5 +1,7 @@
 build/
-
 dist/
 
 *.pyc
+
+.project
+.pydevproject
