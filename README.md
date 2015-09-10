@@ -1,5 +1,7 @@
 ## Aethyr
 
+[![Join the chat at https://gitter.im/jiaweihli/aethyr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jiaweihli/aethyr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 My submission into the 2011 Facebook Hackathon.
 It started out as a proof-of-concept man-in-the-middle attack on DAAP, which
 is used by the iTunes client.
